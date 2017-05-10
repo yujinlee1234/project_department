@@ -46,6 +46,7 @@ public class ERP_Application extends JFrame implements ActionListener {
 		setTitle("대구 아이티 ERP");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 		setContentPane(contentPane);
@@ -85,10 +86,7 @@ public class ERP_Application extends JFrame implements ActionListener {
 		subFrame.setTitle("사원 관리");
 		subFrame.setContentPane(ePanel);
 		subFrame.pack();
-		subFrame.setVisible(true);
-		subFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
-		
+		subFrame.setVisible(true);	
 	}
 	protected void btnDepartmentActionPerformed(ActionEvent e) {
 		//부서 관리 클릭 시
@@ -98,7 +96,6 @@ public class ERP_Application extends JFrame implements ActionListener {
 		subFrame.setContentPane(dPanel);
 		subFrame.pack();
 		subFrame.setVisible(true);	
-		subFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	protected void btnTitleActionPerformed(ActionEvent e) {
 		ERP_Frame subFrame = new ERP_Frame();
@@ -107,6 +104,5 @@ public class ERP_Application extends JFrame implements ActionListener {
 		subFrame.setContentPane(tPanel);
 		subFrame.pack();
 		subFrame.setVisible(true);	
-		subFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 }

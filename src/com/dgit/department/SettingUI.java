@@ -29,6 +29,7 @@ public class SettingUI extends JFrame implements ActionListener {
 	public SettingUI() {		
 		setTitle("DB관리 메뉴");
 		setBounds(100, 100, 450, 300);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 		setContentPane(contentPane);

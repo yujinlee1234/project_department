@@ -39,6 +39,7 @@ public class ERP_Frame extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setContentPane(contentPane);
 		contentPane.add(new PanelDepartment(), BorderLayout.CENTER);
 		pack();

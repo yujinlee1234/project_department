@@ -13,6 +13,5 @@ public class MainFrame extends JFrame {
 		dbPanel = new DataBaseSettingUI();
 		setContentPane(dbPanel);
 		setVisible(true);		
-		
 	}	
 }

@@ -11,6 +11,7 @@ import com.dgit.department.setting.ExportSettingService;
 import com.dgit.department.setting.ImportSettingService;
 import com.dgit.department.setting.InitSettingService;
 import com.dgit.department.setting.SettingService;
+import java.awt.BorderLayout;
 
 public class DataBaseSettingUI extends JPanel implements ActionListener {
 	private JButton btnInit;
@@ -49,7 +50,8 @@ public class DataBaseSettingUI extends JPanel implements ActionListener {
 	protected void actionPerformedBtnInit(ActionEvent arg0) {
 		//초기화
 		service = new InitSettingService();
-		service.doSetting();		
+		service.doSetting();
+		
 	}
 	protected void actionPerformedBtnExport(ActionEvent arg0) {
 		//백업
@@ -61,5 +63,8 @@ public class DataBaseSettingUI extends JPanel implements ActionListener {
 		//복원
 		service = new ImportSettingService();
 		service.doSetting();
+		
 	}
+	
+	
 }

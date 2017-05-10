@@ -4,14 +4,18 @@ import com.dgit.department.setting.dao.DataBaseDao;
 import com.dgit.department.setting.dao.TableDao;
 import com.dgit.department.setting.dao.UserDao;
 import com.dgit.department.util.DBConfig;
+import com.dgit.department.util.UseJOptionPane;
 
 public class InitSettingService extends SettingService {
 	
 	@Override
 	public void doSetting() {
+		
 		createDataBase();
 		createTable();
 		createUser();
+		UseJOptionPane.showMessage("초기화 완료");
+	
 	}
 	
 	private void createDataBase(){

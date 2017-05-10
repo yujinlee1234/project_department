@@ -9,22 +9,29 @@ import com.dgit.department.jdbc.DBConn;
 import com.dgit.department.jdbc.JdbcUtil;
 import com.dgit.department.setting.dao.DataBaseDao;
 import com.dgit.department.util.DBConfig;
+import com.dgit.department.util.UseJOptionPane;
 
 public class ExportSettingService extends SettingService{
 	
 	@Override
 	public void doSetting() {
 		// TODO Auto-generated method stub
-		DataBaseDao dao = DataBaseDao.getInstance();
-		dao.selectUseDatabase();
-		
-		checkBackupDir();
-		
-		for(String tableName : DBConfig.TABLE_NAME){
-			executeExportData(getFilePath(tableName, false), tableName);
+		try{
+			DataBaseDao dao = DataBaseDao.getInstance();
+			dao.selectUseDatabase();
+			
+			checkBackupDir();
+			
+			for(String tableName : DBConfig.TABLE_NAME){
+				executeExportData(getFilePath(tableName, false), tableName);
+			}
+			
+			copyFile();
+			UseJOptionPane.showMessage("데이터 백업 완료");
+		}catch(Exception e){
+			UseJOptionPane.showWarningMessage("데이터 백업 실패\n"+e.getMessage());
 		}
 		
-		copyFile();
 	}
 	
 	private void checkBackupDir() {

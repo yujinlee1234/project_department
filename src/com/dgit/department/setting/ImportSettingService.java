@@ -8,6 +8,7 @@ import com.dgit.department.jdbc.DBConn;
 import com.dgit.department.jdbc.JdbcUtil;
 import com.dgit.department.setting.dao.DataBaseDao;
 import com.dgit.department.util.DBConfig;
+import com.dgit.department.util.UseJOptionPane;
 
 
 
@@ -15,14 +16,19 @@ public class ImportSettingService extends SettingService{
 	
 	@Override
 	public void doSetting() {
-		DataBaseDao dao = DataBaseDao.getInstance();
-		dao.selectUseDatabase();
-				
-		dao.setForeignKeyCheck(0);
-		for(String tableName : DBConfig.TABLE_NAME){
-			executeImportDate(getFilePath(tableName, true), tableName);
+		try{
+			DataBaseDao dao = DataBaseDao.getInstance();
+			dao.selectUseDatabase();
+					
+			dao.setForeignKeyCheck(0);
+			for(String tableName : DBConfig.TABLE_NAME){
+				executeImportDate(getFilePath(tableName, true), tableName);
+			}
+			dao.setForeignKeyCheck(1);
+			UseJOptionPane.showMessage("데이터 복원 완료");
+		}catch(Exception e){
+			UseJOptionPane.showWarningMessage("데이터 복원 실패\n"+e.getMessage());
 		}
-		dao.setForeignKeyCheck(1);		
 	}
 	
 	private void executeImportDate(String tablePath, String tableName) {

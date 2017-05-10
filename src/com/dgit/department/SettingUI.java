@@ -5,37 +5,52 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import com.dgit.department.setting.ExportSettingService;
 import com.dgit.department.setting.ImportSettingService;
 import com.dgit.department.setting.InitSettingService;
 import com.dgit.department.setting.SettingService;
-import java.awt.BorderLayout;
+import java.awt.GridLayout;
 
-public class DataBaseSettingUI extends JPanel implements ActionListener {
+public class SettingUI extends JFrame implements ActionListener {
+	private JPanel contentPane;
 	private JButton btnInit;
 	private JButton btnExport;
 	private JButton btnImport;
 	private SettingService service;
 	
-	public DataBaseSettingUI() {		
+	
+	public static void main(String[] args) {
+		new SettingUI();	
+	}
+	public SettingUI() {		
+		setTitle("DB관리 메뉴");
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
+		setContentPane(contentPane);
+		contentPane.setLayout(new GridLayout(1, 0, 20, 0));
+		
 		btnInit = new JButton("초기화");
 		btnInit.addActionListener(this);
-		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		add(btnInit);
+		
+		contentPane.add(btnInit);
 		
 		btnExport = new JButton("백업");
 		btnExport.addActionListener(this);
-		add(btnExport);
+		contentPane.add(btnExport);
 		
 		btnImport = new JButton("복원");
 		btnImport.addActionListener(this);
-		add(btnImport);
+		contentPane.add(btnImport);
 		
-		
-	}
-
+		setVisible(true);		
+		pack();
+	}	
+	
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == btnImport) {
 			actionPerformedBtnImport(arg0);
@@ -62,9 +77,6 @@ public class DataBaseSettingUI extends JPanel implements ActionListener {
 	protected void actionPerformedBtnImport(ActionEvent arg0) {
 		//복원
 		service = new ImportSettingService();
-		service.doSetting();
-		
+		service.doSetting();		
 	}
-	
-	
 }

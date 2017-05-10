@@ -10,7 +10,7 @@ public class DBConfig {
 	/* Project 내에서 사용할 DB 및 계정 */
 	public static final String DB_NAME = "ncs_erp_lyj";
 	public static final String PJT_USER = "user_ncs";
-	public static final String PJT_PASSWD = DB_NAME;
+	public static final String PJT_PASSWD = PJT_USER;
 
 	public static final String[] TABLE_NAME = {"title", "department","employee"};
 	

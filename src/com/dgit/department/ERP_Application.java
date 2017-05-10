@@ -7,7 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.dgit.department.ui.PanelDepartment;
 import com.dgit.department.ui.PanelEmployee;
+import com.dgit.department.ui.PanelTitle;
 
 import java.awt.GridLayout;
 import javax.swing.JButton;
@@ -84,13 +86,27 @@ public class ERP_Application extends JFrame implements ActionListener {
 		subFrame.setContentPane(ePanel);
 		subFrame.pack();
 		subFrame.setVisible(true);
+		subFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		
 	}
 	protected void btnDepartmentActionPerformed(ActionEvent e) {
-		
+		//부서 관리 클릭 시
+		ERP_Frame subFrame = new ERP_Frame();
+		PanelDepartment dPanel = new PanelDepartment();
+		subFrame.setTitle("부서 관리");
+		subFrame.setContentPane(dPanel);
+		subFrame.pack();
+		subFrame.setVisible(true);	
+		subFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	protected void btnTitleActionPerformed(ActionEvent e) {
-		
+		ERP_Frame subFrame = new ERP_Frame();
+		PanelTitle tPanel = new PanelTitle();
+		subFrame.setTitle("직책 관리");
+		subFrame.setContentPane(tPanel);
+		subFrame.pack();
+		subFrame.setVisible(true);	
+		subFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 }

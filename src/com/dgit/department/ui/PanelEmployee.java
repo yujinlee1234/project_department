@@ -1,6 +1,7 @@
 package com.dgit.department.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -56,6 +57,7 @@ public class PanelEmployee extends JPanel {
 		Date today = new Date();
 		
 		scrollPane = new JScrollPane();
+		scrollPane.setPreferredSize(new Dimension(700, 120));
 		contentPane.add(scrollPane, BorderLayout.SOUTH);
 		
 		table = new JTable();

@@ -21,7 +21,7 @@ public class DBConn {
 		}
 	}
 
-	public Connection getConnection() {
+	public static Connection getConnection() {
 		if(instance == null){
 			new DBConn();
 		}

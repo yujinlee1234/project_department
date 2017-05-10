@@ -81,4 +81,19 @@ public class DataBaseDao {
 			JdbcUtil.close(pstmt);
 		}
 	}
+	
+	public void createView(String sql) {
+		Connection con = DBConn.getConnection();
+		System.out.println("CREATE VIEW SQL : "+sql);
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.execute();
+			System.out.printf("CREATE VIEW(%s) Success! %n",sql.substring(35, sql.indexOf("AS")));
+		} catch (SQLException e) {
+			System.out.printf("CREATE VIEW(%s) Fail! %n",	sql.substring(35, sql.indexOf("AS")));
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(pstmt);
+		}
+	}
 }

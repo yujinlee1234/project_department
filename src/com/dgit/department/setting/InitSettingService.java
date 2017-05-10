@@ -13,11 +13,17 @@ public class InitSettingService extends SettingService {
 		
 		createDataBase();
 		createTable();
+		createView();
 		createUser();
 		UseJOptionPane.showMessage("초기화 완료");
 	
 	}
 	
+	private void createView() {
+		DataBaseDao DBDao = DataBaseDao.getInstance();
+		DBDao.createView(DBConfig.CREATE_VIEW_SQL);		
+	}
+
 	private void createDataBase(){
 		DataBaseDao DBDao = DataBaseDao.getInstance();
 		DBDao.createDatabase();

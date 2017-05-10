@@ -43,4 +43,9 @@ public class DBConfig {
 			+ "FOREIGN KEY (title) REFERENCES title (tcode))"			
 	};
 	
+	public static final String CREATE_VIEW_SQL = "CREATE OR REPLACE VIEW "+DB_NAME+".view_employee "
+												+"AS select e.eno, e.ename, e.salary, e.gender, e.joindate, e.dno, e.title, t.tcode, t.tname, d.dcode, d.dname, d.floor "
+												+"from employee as e left outer join title t on e.title = t.tcode "
+												+"left outer join department d on e.dno = d.dcode";
+	
 }

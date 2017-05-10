@@ -6,10 +6,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.dgit.department.ui.PanelEmployee;
+
 import java.awt.GridLayout;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class ERP_Application extends JFrame {
+public class ERP_Application extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JButton btnEmployee;
@@ -46,15 +51,46 @@ public class ERP_Application extends JFrame {
 		
 		
 		btnEmployee = new JButton("사원관리");
+		btnEmployee.addActionListener(this);
 		contentPane.add(btnEmployee);
 		
 		btnDepartment = new JButton("부서관리");
+		btnDepartment.addActionListener(this);
 		contentPane.add(btnDepartment);
 		
 		btnTitle = new JButton("직책관리");
+		btnTitle.addActionListener(this);
 		contentPane.add(btnTitle);
 		
 		pack();
 	}
 
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnTitle) {
+			btnTitleActionPerformed(e);
+		}
+		if (e.getSource() == btnDepartment) {
+			btnDepartmentActionPerformed(e);
+		}
+		if (e.getSource() == btnEmployee) {
+			btnEmployeeActionPerformed(e);
+		}
+	}
+	protected void btnEmployeeActionPerformed(ActionEvent e) {
+		//사원관리 클릭 시 
+		ERP_Frame subFrame = new ERP_Frame();
+		PanelEmployee ePanel = new PanelEmployee();
+		subFrame.setTitle("사원 관리");
+		subFrame.setContentPane(ePanel);
+		subFrame.pack();
+		subFrame.setVisible(true);
+		
+		
+	}
+	protected void btnDepartmentActionPerformed(ActionEvent e) {
+		
+	}
+	protected void btnTitleActionPerformed(ActionEvent e) {
+		
+	}
 }

@@ -12,6 +12,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -25,11 +26,14 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.MaskFormatter;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 public class PanelEmployee extends JPanel {
 	private JTextField tfEno;
 	private JTextField tfEname;
-	private JTextField tfJoinDate;
+	private JFormattedTextField tfJoinDate;
 	private JComboBox cmbTitle;
 	private JSpinner spnSalary;
 	private JPanel panel_employee;
@@ -230,7 +234,14 @@ public class PanelEmployee extends JPanel {
 		gbc_lblJoinDate.gridy = 6;
 		panel_employee.add(lblJoinDate, gbc_lblJoinDate);
 		
-		tfJoinDate = new JTextField();
+		try{
+			MaskFormatter mf = new MaskFormatter("####-##-##");
+			mf.setPlaceholder("_");
+			tfJoinDate = new JFormattedTextField(mf);			
+		}catch(java.text.ParseException e){
+			e.printStackTrace();
+		}
+		
 		tfJoinDate.setColumns(10);
 		GridBagConstraints gbc_tfJoinDate = new GridBagConstraints();
 		gbc_tfJoinDate.gridwidth = 2;
@@ -238,8 +249,7 @@ public class PanelEmployee extends JPanel {
 		gbc_tfJoinDate.gridx = 1;
 		gbc_tfJoinDate.gridy = 6;
 		panel_employee.add(tfJoinDate, gbc_tfJoinDate);
-		tfJoinDate.setText(sdf.format(today));
-		
+		tfJoinDate.setText(sdf.format(today));		
 		
 		JPanel panel_btn = new JPanel();
 		panel.add(panel_btn, BorderLayout.SOUTH);

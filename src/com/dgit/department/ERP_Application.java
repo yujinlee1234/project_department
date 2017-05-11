@@ -1,8 +1,11 @@
 package com.dgit.department;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,11 +13,6 @@ import javax.swing.border.EmptyBorder;
 import com.dgit.department.ui.PanelDepartment;
 import com.dgit.department.ui.PanelEmployee;
 import com.dgit.department.ui.PanelTitle;
-
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class ERP_Application extends JFrame implements ActionListener {
 

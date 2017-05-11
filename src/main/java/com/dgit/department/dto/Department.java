@@ -49,5 +49,9 @@ public class Department {
 		if (dcode != other.dcode)
 			return false;
 		return true;
-	}	
+	}
+	
+	public String[] toArray(){
+		return new String[]{"D"+String.format("%03d",dcode), dname, floor+""};
+	}
 }

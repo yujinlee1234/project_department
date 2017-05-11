@@ -97,7 +97,7 @@ public class TitleService {
 		}	
 	}
 	
-	public int getMaxEno(){
+	public int getMaxNo(){
 		if (logger.isDebugEnabled()) {
 			logger.debug("getMaxEno() - start");
 		}

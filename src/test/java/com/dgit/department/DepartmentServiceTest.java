@@ -71,7 +71,7 @@ public class DepartmentServiceTest {
 	@Test
 	public void selectTest(){
 		EmployeeService dService = EmployeeService.getInstance();
-		int result = dService.getMaxEno();
+		int result = dService.getMaxNo();
 		System.out.println(result);
 	}
 

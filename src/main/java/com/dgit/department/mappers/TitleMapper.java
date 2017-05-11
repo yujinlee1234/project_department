@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Update;
 import com.dgit.department.dto.Title;
 
 public interface TitleMapper {
-	@Select("select * from title")
+	@Select("select * from title order by tcode")
 	public List<Title> selectAllTitle();
 	
 	@Select("select * from title where tcode=#{tcode}")

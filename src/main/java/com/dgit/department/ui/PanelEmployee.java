@@ -5,52 +5,65 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import javax.swing.text.MaskFormatter;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+import com.dgit.department.dto.Department;
+import com.dgit.department.dto.Employee;
+import com.dgit.department.dto.Title;
+import com.dgit.department.service.DepartmentService;
+import com.dgit.department.service.EmployeeService;
+import com.dgit.department.service.TitleService;
+import com.dgit.department.ui.table.EmployeeTable;
+import com.dgit.department.ui.table.TableMenu;
+import com.dgit.department.util.UseJOptionPane;
 
-public class PanelEmployee extends JPanel {
+public class PanelEmployee extends JPanel implements ActionListener {
 	private JTextField tfEno;
 	private JTextField tfEname;
 	private JFormattedTextField tfJoinDate;
-	private JComboBox cmbTitle;
+	private JComboBox<Title> cmbTitle;
 	private JSpinner spnSalary;
 	private JPanel panel_employee;
 	private JRadioButton rbtnMale;
 	private JRadioButton rbtnFemale;
-	private JComboBox cmbDepart;
+	private JComboBox<Department> cmbDepart;
 	private JButton btnAdd;
 	private JButton btnCancel;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JScrollPane scrollPane;
-	private JTable table;
+	private EmployeeTable table;
 	private JPanel panel;
+	private int defaultSalary = 1500000;
+	private JMenuItem itemUpdate;
+	private JMenuItem itemDelete;
+	private int selectedIndex;
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelEmployee() {
+		/* 화면 구성 */
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel contentPane = new JPanel();
@@ -64,24 +77,7 @@ public class PanelEmployee extends JPanel {
 		scrollPane.setPreferredSize(new Dimension(700, 120));
 		contentPane.add(scrollPane, BorderLayout.SOUTH);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"E17001", "나사장", "사장", "5,000,000", "남자", "경영(4층)", "2017-03-01"},
-				{"E17002", "나부장", "부장", "4,000,000", "남자", "마케팅(10층)", "2017-03-01"},
-				{"E17003", "너부장", "부장", "4,000,000", "여자", "개발(9층)", "2017-03-01"},
-				{"E17004", "나과장", "과장", "3,500,000", "남자", "마케팅(10층)", "2017-03-01"},
-				{"E17005", "너과장", "과장", "3,500,000", "여자", "개발(9층)", "2017-03-01"},
-				{"E17006", "나대리", "대리", "3,000,000", "남자", "마케팅(10층)", "2017-03-01"},
-				{"E17007", "너대리", "대리", "3,000,000", "여자", "개발(9층)", "2017-03-01"}
-			},
-			new String[] {
-				"번호", "사원명", "직책", "급여", "성별", "부서", "입사일"
-			}
-		));
-		tableCellAlignment(SwingConstants.CENTER, 0,1,2,4,5,6);
-		tableCellAlignment(SwingConstants.RIGHT, 3);
-		tableSetWidth(3,4,2,5,2,4,4);
+		table = new EmployeeTable();
 		scrollPane.setViewportView(table);
 		
 		panel = new JPanel();
@@ -146,8 +142,8 @@ public class PanelEmployee extends JPanel {
 		gbc_lblTitle.gridy = 2;
 		panel_employee.add(lblTitle, gbc_lblTitle);
 		
-		cmbTitle = new JComboBox(); 
-		cmbTitle.setModel(new DefaultComboBoxModel(new String[] {"사장", "부장", "과장", "대리", "사원"}));
+		cmbTitle = new JComboBox<>(); 
+		//cmbTitle.setModel(new DefaultComboBoxModel(new String[] {"사장", "부장", "과장", "대리", "사원"}));
 		
 		GridBagConstraints gbc_cmbTitle = new GridBagConstraints();
 		gbc_cmbTitle.gridwidth = 2;
@@ -166,7 +162,7 @@ public class PanelEmployee extends JPanel {
 		panel_employee.add(lblSalary, gbc_lblSalary);
 		
 		spnSalary = new JSpinner();
-		spnSalary.setModel(new SpinnerNumberModel(1500000, 1000000, 5000000, 100000));
+		spnSalary.setModel(new SpinnerNumberModel(defaultSalary, 1000000, 5000000, 100000));
 		
 		GridBagConstraints gbc_spnSalary = new GridBagConstraints();
 		gbc_spnSalary.gridwidth = 2;
@@ -216,8 +212,8 @@ public class PanelEmployee extends JPanel {
 		gbc_lblDepart.gridy = 5;
 		panel_employee.add(lblDepart, gbc_lblDepart);
 		
-		cmbDepart = new JComboBox();
-		cmbDepart.setModel(new DefaultComboBoxModel(new String[] {"마케팅(10층)", "개발(9층)", "인사(6층)", "총무(7층)", "경영(4층)"}));
+		cmbDepart = new JComboBox<>();
+		//cmbDepart.setModel(new DefaultComboBoxModel(new String[] {"마케팅(10층)", "개발(9층)", "인사(6층)", "총무(7층)", "경영(4층)"}));
 		GridBagConstraints gbc_cmbDepart = new GridBagConstraints();
 		gbc_cmbDepart.gridwidth = 2;
 		gbc_cmbDepart.insets = new Insets(0, 0, 5, 0);
@@ -255,27 +251,159 @@ public class PanelEmployee extends JPanel {
 		panel.add(panel_btn, BorderLayout.SOUTH);
 		
 		btnAdd = new JButton("추가");
+		btnAdd.addActionListener(this);
 		panel_btn.add(btnAdd);
 		
 		btnCancel = new JButton("취소");
+		btnCancel.addActionListener(this);
 		panel_btn.add(btnCancel);
-
+		//화면 구성 끝
+		
+		setTitleCmb();
+		setDepartmentCmb();
+		
+		TableMenu tMenu = new TableMenu();
+		table.setComponentPopupMenu(tMenu);
+		
+		itemUpdate = tMenu.getItemUpdate();
+		itemDelete = tMenu.getItemDelete();
+		
+		itemUpdate.addActionListener(this);
+		itemDelete.addActionListener(this);
+		
+		resetFields();
 	}
-
-	
-	protected void tableCellAlignment(int align, int... idx) {//
-		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
-		dtcr.setHorizontalAlignment(align);
-		TableColumnModel model = table.getColumnModel();
-		for (int i = 0; i < idx.length; i++) {
-			model.getColumn(idx[i]).setCellRenderer(dtcr);
+	private void setDepartmentCmb() {
+		// TODO Auto-generated method stub
+		List<Department> dList = DepartmentService.getInstance().getAllDepartments();
+		for(Department d:dList){
+			cmbDepart.addItem(d);
 		}
 	}
-	
-	protected void tableSetWidth(int... width) {//
-		TableColumnModel model = table.getColumnModel();
-		for (int i = 0; i < width.length; i++) {
-			model.getColumn(i).setPreferredWidth(width[i]);
+
+
+	private void setTitleCmb() {
+		List<Title> tList = TitleService.getInstance().getAllTitles();
+		for(Title t:tList){
+			cmbTitle.addItem(t);
+		}
+		
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnCancel) {
+			btnCancelActionPerformed(e);
+		}
+		if (e.getSource() == btnAdd) {
+			btnAddActionPerformed(e);
 		}		
+		if (e.getSource() == itemUpdate) {
+			itemUpdateActionPerformed(e);
+		}		
+		if (e.getSource() == itemDelete) {
+			itemDeleteActionPerformed(e);
+		}
+	}
+	private void itemDeleteActionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		int index = table.getSelectedRow();
+		if(index<0){
+			UseJOptionPane.showWarningMessage("삭제할 사원이 선택되지 않았습니다.");
+		}else{
+			try{
+				Employee employee = table.getSelectedItem(index);
+				EmployeeService.getInstance().deleteEmployee(employee.getEno());
+				table.setTable();
+				resetFields();
+				UseJOptionPane.showMessage("성공적으로 삭제되었습니다.");
+			}catch(Exception ex){
+				UseJOptionPane.showWarningMessage("오류가 발생하여 삭제되지 못했습니다.\n"+ex.getMessage());
+			}
+		}
+	}
+
+	private void itemUpdateActionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		selectedIndex = table.getSelectedRow();
+		if(selectedIndex<0){
+			UseJOptionPane.showWarningMessage("수정할 사원이 선택되지 않았습니다.");
+		}else{
+			btnAdd.setText("수정");
+			setFieldsWithEmp();
+		}
+	}
+
+	protected void btnAddActionPerformed(ActionEvent e) {
+		if(tfEname.getText().trim().length()==0){
+			UseJOptionPane.showWarningMessage("사원명을 입력해 주세요.");
+			tfEname.requestFocus();
+		}else {
+			String eno = tfEno.getText().trim();
+			String ename = tfEname.getText().trim();
+			Title title = (Title) cmbTitle.getSelectedItem();
+			Department department = (Department) cmbDepart.getSelectedItem();
+			String joinDate = tfJoinDate.getText().trim();
+			boolean gender = rbtnMale.isSelected()?true:false;
+			int salary = (int) spnSalary.getValue();
+			
+			try{
+				Employee employee = new Employee();
+				employee.setEno(Integer.parseInt(eno.substring(1)));
+				employee.setEname(ename);
+				employee.setTitle(title);
+				employee.setDno(department);
+				employee.setJoindate(Employee.joinDateFormat.parse(joinDate));
+				employee.setGender(gender);
+				employee.setSalary(salary);
+				if(btnAdd.getText().equals("추가")){
+					EmployeeService.getInstance().insertEmployee(employee);
+					UseJOptionPane.showMessage("성공적으로 추가하였습니다.");
+				}else if(btnAdd.getText().equals("수정")){
+					EmployeeService.getInstance().updateEmployee(employee);
+					UseJOptionPane.showMessage("성공적으로 수정하였습니다.");
+					btnAdd.setText("추가");
+				}
+				table.setTable();
+				resetFields();
+			}catch(Exception ex){
+				UseJOptionPane.showWarningMessage("오류가 발생하여 추가하지 못했습니다.\n"+ex.getMessage());
+			}
+		}
+		
+	}
+	protected void btnCancelActionPerformed(ActionEvent e) {
+		if(btnAdd.getText().equals("추가")){
+			resetFields();
+		}else if(btnAdd.getText().equals("수정")){
+			setFieldsWithEmp();
+		}
+	}
+
+	private void setFieldsWithEmp() {
+		// TODO Auto-generated method stub
+		Employee employee = table.getSelectedItem(selectedIndex);
+		tfEno.setText("E"+employee.getEno());
+		tfEname.setText(employee.getEname());
+		tfJoinDate.setText(employee.joinDateFormat.format(employee.getJoindate()));
+		cmbDepart.setSelectedItem(employee.getDno());
+		cmbTitle.setSelectedItem(employee.getTitle());
+		spnSalary.setValue(employee.getSalary());
+		if(employee.isGender()){
+			//남자
+			rbtnMale.setSelected(true);
+		}else{
+			rbtnFemale.setSelected(true);
+		}
+	}
+
+	private void resetFields() {
+		// TODO Auto-generated method stub
+		tfEno.setText("E"+(EmployeeService.getInstance().getMaxNo()+1));
+		tfEname.setText("");
+		tfJoinDate.setText(Employee.joinDateFormat.format(new Date()));
+		cmbDepart.setSelectedIndex(0);
+		cmbTitle.setSelectedIndex(0);
+		rbtnMale.setSelected(true);
+		spnSalary.setValue(defaultSalary);
 	}
 }

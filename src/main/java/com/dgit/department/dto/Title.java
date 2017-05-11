@@ -43,5 +43,7 @@ public class Title {
 		return true;
 	}
 	
-	
+	public String[] toArray(){
+		return new String[]{"T"+String.format("%03d",tcode), tname};
+	}
 }

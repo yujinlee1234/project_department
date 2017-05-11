@@ -13,6 +13,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
@@ -26,22 +27,37 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class PanelDepartment extends JPanel {
+import com.dgit.department.dto.Department;
+import com.dgit.department.dto.Title;
+import com.dgit.department.service.DepartmentService;
+import com.dgit.department.service.TitleService;
+import com.dgit.department.ui.table.DepartmentTable;
+import com.dgit.department.ui.table.TableMenu;
+import com.dgit.department.util.UseJOptionPane;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+
+public class PanelDepartment extends JPanel implements ActionListener, KeyListener {
 	private JTextField tfDcode;
 	private JTextField tfDname;
 	private JTextField tfFloor;
 	private JPanel panel_department;
 	private JButton btnAdd;
 	private JButton btnCancel;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JScrollPane scrollPane;
-	private JTable table;
+	private DepartmentTable table;
 	private JPanel panel;
+	private JMenuItem itemUpdate;
+	private JMenuItem itemDelete;
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelDepartment() {
+		/* 화면구성 */
 		setLayout(new BorderLayout(0, 0));		
 		JPanel contentPane = new JPanel();
 		add(contentPane, BorderLayout.CENTER);
@@ -51,21 +67,7 @@ public class PanelDepartment extends JPanel {
 		scrollPane.setPreferredSize(new Dimension(400, 100));
 		contentPane.add(scrollPane, BorderLayout.SOUTH);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"D001", "마케팅", "10"},
-				{"D002", "개발", "9"},
-				{"D003", "인사", "6"},
-				{"D004", "총무", "7"},
-				{"D005", "경영", "4"},				
-			},
-			new String[] {
-				"번호", "부서명", "위치"
-			}
-		));
-		tableCellAlignment(SwingConstants.CENTER, 0,1,2);
-		tableSetWidth(1,2,1);
+		table = new DepartmentTable();
 		scrollPane.setViewportView(table);
 		
 		panel = new JPanel();
@@ -131,6 +133,7 @@ public class PanelDepartment extends JPanel {
 		panel_department.add(lblFloor, gbc_lblFloor);
 		
 		tfFloor = new JTextField();
+		tfFloor.addKeyListener(this);
 		tfFloor.setColumns(10);
 		GridBagConstraints gbc_tfFloor = new GridBagConstraints();
 		gbc_tfFloor.gridwidth = 2;
@@ -143,27 +146,140 @@ public class PanelDepartment extends JPanel {
 		panel.add(panel_btn, BorderLayout.SOUTH);
 		
 		btnAdd = new JButton("추가");
+		btnAdd.addActionListener(this);
 		panel_btn.add(btnAdd);
 		
 		btnCancel = new JButton("취소");
+		btnCancel.addActionListener(this);
 		panel_btn.add(btnCancel);
-
+		//화면 구성 끝
+		TableMenu tMenu = new TableMenu();
+		table.setComponentPopupMenu(tMenu);
+		itemUpdate  = tMenu.getItemUpdate();
+		itemUpdate.addActionListener(this);
+		itemDelete = tMenu.getItemDelete();
+		itemDelete.addActionListener(this);
+		
+		resetFields();
 	}
 
-	
-	protected void tableCellAlignment(int align, int... idx) {//
-		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
-		dtcr.setHorizontalAlignment(align);
-		TableColumnModel model = table.getColumnModel();
-		for (int i = 0; i < idx.length; i++) {
-			model.getColumn(idx[i]).setCellRenderer(dtcr);
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnCancel) {
+			btnCancelActionPerformed(e);
+		}
+		if (e.getSource() == btnAdd) {
+			btnAddActionPerformed(e);
+		}
+		
+		if (e.getSource() == itemUpdate) {
+			itemUpdateActionPerformed(e);
+		}
+		
+		if (e.getSource() == itemDelete) {
+			itemDeleteActionPerformed(e);
 		}
 	}
-	
-	protected void tableSetWidth(int... width) {//
-		TableColumnModel model = table.getColumnModel();
-		for (int i = 0; i < width.length; i++) {
-			model.getColumn(i).setPreferredWidth(width[i]);
+	private void itemDeleteActionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		int index = table.getSelectedRow();
+		if(index<0){
+			UseJOptionPane.showWarningMessage("삭제할 아이템이 선택되지 않았습니다.");
+		}else{
+			try{
+				Department department = table.getSelectedItem(index);
+				DepartmentService.getInstance().deleteDepartment(department.getDcode());
+				table.setTable();
+				resetFields();
+				UseJOptionPane.showMessage("성공적으로 삭제되었습니다.");
+			}catch(Exception ex){
+				UseJOptionPane.showWarningMessage("오류가 발생하여 삭제되지 못했습니다.\n"+ex.getMessage());
+			}
+		}
+	}
+
+	private void itemUpdateActionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		int index = table.getSelectedRow();
+		if(index<0){
+			UseJOptionPane.showWarningMessage("수정할 아이템이 선택되지 않았습니다.");
+		}else{
+			btnAdd.setText("수정");
+			Department department = table.getSelectedItem(index);
+			tfDcode.setText("D"+String.format("%03d", department.getDcode()));
+			tfDname.setText(department.getDname());
+			tfFloor.setText(department.getFloor()+"");
+		}
+	}
+
+	protected void btnAddActionPerformed(ActionEvent e) {
+		if(tfDname.getText().trim().length()==0){
+			UseJOptionPane.showWarningMessage("부서명을 입력해 주세요.");
+			tfDname.requestFocus();
+		}else if(tfFloor.getText().trim().length()==0){
+			UseJOptionPane.showWarningMessage("위치를 입력해 주세요.");
+			tfFloor.requestFocus();
+		}else{
+			try{
+				String dcode = tfDcode.getText();
+				String dname = tfDname.getText().trim();
+				String floor = tfFloor.getText();
+				
+				Department department = new Department();
+				department.setDcode(Integer.parseInt(dcode.substring(1)));
+				department.setDname(dname);
+				department.setFloor(Integer.parseInt(floor.trim()));
+				if(btnAdd.getText().equals("추가")){
+					DepartmentService.getInstance().insertDepartment(department);
+					UseJOptionPane.showMessage("성공적으로 등록되었습니다.");
+				}else if(btnAdd.getText().equals("수정")){
+					DepartmentService.getInstance().updateDepartment(department);
+					UseJOptionPane.showMessage("성공적으로 수정되었습니다.");
+					btnAdd.setText("추가");
+				}
+				table.setTable();
+				resetFields();
+				
+			}catch(Exception ex){
+				String result = "";
+				if(btnAdd.getText().equals("추가")){
+					result = "등록";
+				}else if(btnAdd.getText().equals("수정")){
+					result = "수정";
+				}
+				UseJOptionPane.showWarningMessage("오류가 발생하여 "+result+"하지 못했습니다.\n"+ex.getMessage());
+			}
+		}
+	}
+	protected void btnCancelActionPerformed(ActionEvent e) {
+		resetFields();
+	}
+
+
+	private void resetFields() {
+		// TODO Auto-generated method stub
+		int dcode = DepartmentService.getInstance().getMaxNo();
+		tfDcode.setText("D"+String.format("%03d", (dcode+1)));
+		tfDname.setText("");
+		tfFloor.setText("");
+	}
+	public void keyPressed(KeyEvent arg0) {
+	}
+	public void keyReleased(KeyEvent arg0) {
+	}
+	public void keyTyped(KeyEvent e) {
+		if (e.getSource() == tfFloor) {
+			tfFloorKeyTyped(e);
+		}
+	}
+	protected void tfFloorKeyTyped(KeyEvent e) {
+		char c = e.getKeyChar();
+		if(tfFloor.getText().trim().length()>=2){//층 수가 99를 넘기면 더이상 입력 안되도록
+			e.consume();
+			return;
+		}
+		if(!Character.isDigit(c)){
+			e.consume();
+			return;
 		}		
 	}
 }

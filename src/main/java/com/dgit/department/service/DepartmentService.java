@@ -100,7 +100,7 @@ public class DepartmentService {
 		}	
 	}
 	
-	public int getMaxEno(){
+	public int getMaxNo(){
 		if (logger.isDebugEnabled()) {
 			logger.debug("getMaxEno() - start");
 		}

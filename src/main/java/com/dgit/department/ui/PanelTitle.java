@@ -13,7 +13,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -26,22 +28,32 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class PanelTitle extends JPanel {
+import com.dgit.department.dto.Title;
+import com.dgit.department.service.TitleService;
+import com.dgit.department.ui.table.TableMenu;
+import com.dgit.department.ui.table.TitleTable;
+import com.dgit.department.util.UseJOptionPane;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class PanelTitle extends JPanel implements ActionListener {
 	private JTextField tftcode;
 	private JTextField tftname;
-	private JTextField tfFloor;
 	private JPanel panel_title;
 	private JButton btnAdd;
 	private JButton btnCancel;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JScrollPane scrollPane;
-	private JTable table;
+	private TitleTable table;
 	private JPanel panel;
+	private JMenuItem itemUpdate;
+	private JMenuItem itemDelete;
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelTitle() {
+		/* 화면 구성 */
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel contentPane = new JPanel();
@@ -52,21 +64,7 @@ public class PanelTitle extends JPanel {
 		scrollPane.setPreferredSize(new Dimension(400, 100));
 		contentPane.add(scrollPane, BorderLayout.SOUTH);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"T001", "사장"},
-				{"T002", "부장"},
-				{"T003", "과장"},
-				{"T004", "대리"},
-				{"T005", "사원"},				
-			},
-			new String[] {
-				"번호", "직책"
-			}
-		));
-		tableCellAlignment(SwingConstants.CENTER, 0,1);
-		tableSetWidth(1,3);
+		table = new TitleTable();		
 		scrollPane.setViewportView(table);
 		
 		panel = new JPanel();
@@ -94,7 +92,6 @@ public class PanelTitle extends JPanel {
 		
 		tftcode = new JTextField();
 		tftcode.setEditable(false);
-		tftcode.setText("T006");
 		GridBagConstraints gbc_tftcode = new GridBagConstraints();
 		gbc_tftcode.gridwidth = 2;
 		gbc_tftcode.fill = GridBagConstraints.HORIZONTAL;
@@ -127,27 +124,115 @@ public class PanelTitle extends JPanel {
 		panel.add(panel_btn, BorderLayout.SOUTH);
 		
 		btnAdd = new JButton("추가");
+		btnAdd.addActionListener(this);
 		panel_btn.add(btnAdd);
 		
 		btnCancel = new JButton("취소");
+		btnCancel.addActionListener(this);
 		panel_btn.add(btnCancel);
-
+		// end of 화면구성
+		TableMenu tMenu = new TableMenu();
+		table.setComponentPopupMenu(tMenu);
+		itemUpdate = tMenu.getItemUpdate();
+		itemDelete = tMenu.getItemDelete();
+		
+		itemUpdate.addActionListener(this);
+		itemDelete.addActionListener(this);
+		resetFields();
 	}
-
 	
-	protected void tableCellAlignment(int align, int... idx) {//
-		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
-		dtcr.setHorizontalAlignment(align);
-		TableColumnModel model = table.getColumnModel();
-		for (int i = 0; i < idx.length; i++) {
-			model.getColumn(idx[i]).setCellRenderer(dtcr);
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnCancel) {
+			btnCancelActionPerformed(e);
+		}
+		if (e.getSource() == btnAdd) {
+			btnAddActionPerformed(e);
+		}
+		
+		if (e.getSource() == itemUpdate) {
+			itemUpdateActionPerformed(e);
+		}
+		
+		if (e.getSource() == itemDelete) {
+			itemDeleteActionPerformed(e);
 		}
 	}
-	
-	protected void tableSetWidth(int... width) {//
-		TableColumnModel model = table.getColumnModel();
-		for (int i = 0; i < width.length; i++) {
-			model.getColumn(i).setPreferredWidth(width[i]);
-		}		
+	protected void itemDeleteActionPerformed(ActionEvent e) {//삭제
+		// TODO Auto-generated method stub
+		int index = table.getSelectedRow();
+		if(index<0){
+			UseJOptionPane.showWarningMessage("삭제할 아이템이 선택되지 않았습니다.");
+		}else{
+			try{
+				Title title = table.getSelectedItem(index);
+				TitleService.getInstance().deleteTitle(title.getTcode());
+				table.setTable();
+				resetFields();
+				UseJOptionPane.showMessage("성공적으로 삭제되었습니다.");
+			}catch(Exception ex){
+				UseJOptionPane.showWarningMessage("오류가 발생하여 삭제되지 못했습니다.\n"+ex.getMessage());
+			}
+		}
+	}
+
+	protected void itemUpdateActionPerformed(ActionEvent e) {//수정
+		// TODO Auto-generated method stub		
+		int index = table.getSelectedRow();
+		if(index<0){
+			UseJOptionPane.showWarningMessage("수정할 아이템이 선택되지 않았습니다.");
+		}else{
+			btnAdd.setText("수정");
+			Title title = table.getSelectedItem(index);
+			tftcode.setText("T"+String.format("%03d", title.getTcode()));
+			tftname.setText(title.getTname());
+		}
+	}
+
+	protected void btnAddActionPerformed(ActionEvent e) {//추가
+		
+		if(tftname.getText().trim().length()==0){
+			UseJOptionPane.showWarningMessage("직책명을 입력해 주세요.");
+			tftname.requestFocus();
+		}else{
+			try{
+				String tcode = tftcode.getText();
+				String tname = tftname.getText().trim();
+				
+				Title title = new Title();
+				title.setTcode(Integer.parseInt(tcode.substring(1)));
+				title.setTname(tname);
+				if(btnAdd.getText().equals("추가")){
+					TitleService.getInstance().insertTitle(title);
+					UseJOptionPane.showMessage("성공적으로 등록되었습니다.");
+					
+				}else if(btnAdd.getText().equals("수정")){
+					TitleService.getInstance().updateTitle(title);
+					UseJOptionPane.showMessage("성공적으로 수정되었습니다.");
+					btnAdd.setText("추가");
+				}
+				table.setTable();
+				resetFields();
+				
+			}catch(Exception ex){
+				String result = "";
+				if(btnAdd.getText().equals("추가")){
+					result = "등록";
+				}else if(btnAdd.getText().equals("수정")){
+					result = "수정";
+				}
+				UseJOptionPane.showWarningMessage("오류가 발생하여 "+result+"하지 못했습니다.\n"+ex.getMessage());
+			}
+		}
+	}
+	protected void btnCancelActionPerformed(ActionEvent e) {//취소
+		resetFields();
+	}
+
+
+	private void resetFields() {
+		// 필드 초기화
+		int tcode = TitleService.getInstance().getMaxNo();
+		tftcode.setText("T"+String.format("%03d", (tcode+1)));
+		tftname.setText("");
 	}
 }

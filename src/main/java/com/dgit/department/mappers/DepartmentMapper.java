@@ -11,7 +11,7 @@ import com.dgit.department.dto.Department;
 import com.dgit.department.dto.Title;
 
 public interface DepartmentMapper {
-	@Select("select * from department")
+	@Select("select * from department order by dcode")
 	public List<Department> selectAllItem();
 	
 	@Select("select * from department where dcode=#{dcode}")

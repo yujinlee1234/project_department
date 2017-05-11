@@ -39,8 +39,8 @@ public class DBConfig {
 			+ "joindate DATE null, "
 			+ "title INT(11) null, "
 			+ "primary key (eno), "
-			+ "FOREIGN KEY (dno) REFERENCES department (dcode), "
-			+ "FOREIGN KEY (title) REFERENCES title (tcode))"			
+			+ "FOREIGN KEY (dno) REFERENCES department (dcode) on update cascade on delete set null, "
+			+ "FOREIGN KEY (title) REFERENCES title (tcode) on update cascade on delete set null )"			
 	};
 	
 	public static final String CREATE_VIEW_SQL = "CREATE OR REPLACE VIEW "+DB_NAME+".view_employee "

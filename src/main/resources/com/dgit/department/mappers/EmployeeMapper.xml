@@ -12,7 +12,7 @@
 		<association property="title" resultMap="com.dgit.department.mappers.TitleMapper.TitleResult"/>
 	</resultMap>
 	<select id="selectAllItem" resultMap="EmployeeResult">
-		select * from view_employee
+		select * from view_employee order by eno
 	</select>
 	<select id="selectItem" resultMap="EmployeeResult">
 		select * from view_employee where eno=#{eno}

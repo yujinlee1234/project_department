@@ -1,5 +1,6 @@
 package com.dgit.department.dto;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Employee {
@@ -11,6 +12,7 @@ public class Employee {
 	private boolean gender;
 	private Date joindate;
 	private Title title;
+	public static final SimpleDateFormat joinDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	/* GET/SET */
 	public int getEno() {
 		return eno;
@@ -80,4 +82,9 @@ public class Employee {
 		return String.format("Employee [eno=%s, ename=%s, salary=%s, dno=%s, gender=%s, joindate=%s, title=%s]", eno,
 				ename, salary, dno, gender, joindate, title);
 	}	
+	
+	public String[] toArray(){
+		
+		return new String[]{"E"+eno, ename, title!=null?title.toString():"", String.format("%,d", salary), gender==true?"남자":"여자", dno!=null?dno.toString():"", joinDateFormat.format(joindate) };
+	}
 }

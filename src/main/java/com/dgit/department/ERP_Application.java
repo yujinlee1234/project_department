@@ -20,6 +20,7 @@ public class ERP_Application extends JFrame implements ActionListener {
 	private JButton btnEmployee;
 	private JButton btnDepartment;
 	private JButton btnTitle;
+	private final ERP_Frame subFrame;
 
 	/**
 	 * Launch the application.
@@ -63,6 +64,7 @@ public class ERP_Application extends JFrame implements ActionListener {
 		btnTitle.addActionListener(this);
 		contentPane.add(btnTitle);
 		
+		subFrame = new ERP_Frame();
 		pack();
 	}
 
@@ -79,7 +81,6 @@ public class ERP_Application extends JFrame implements ActionListener {
 	}
 	protected void btnEmployeeActionPerformed(ActionEvent e) {
 		//사원관리 클릭 시 
-		ERP_Frame subFrame = new ERP_Frame();
 		PanelEmployee ePanel = new PanelEmployee();
 		subFrame.setTitle("사원 관리");
 		subFrame.setContentPane(ePanel);
@@ -88,7 +89,6 @@ public class ERP_Application extends JFrame implements ActionListener {
 	}
 	protected void btnDepartmentActionPerformed(ActionEvent e) {
 		//부서 관리 클릭 시
-		ERP_Frame subFrame = new ERP_Frame();
 		PanelDepartment dPanel = new PanelDepartment();
 		subFrame.setTitle("부서 관리");
 		subFrame.setContentPane(dPanel);
@@ -96,7 +96,6 @@ public class ERP_Application extends JFrame implements ActionListener {
 		subFrame.setVisible(true);	
 	}
 	protected void btnTitleActionPerformed(ActionEvent e) {
-		ERP_Frame subFrame = new ERP_Frame();
 		PanelTitle tPanel = new PanelTitle();
 		subFrame.setTitle("직책 관리");
 		subFrame.setContentPane(tPanel);

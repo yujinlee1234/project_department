@@ -1,5 +1,6 @@
 package com.dgit.department;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.dgit.department.ui.FrameDepartment;
+import com.dgit.department.ui.FrameEmployee;
+import com.dgit.department.ui.FrameTitle;
 import com.dgit.department.ui.PanelDepartment;
 import com.dgit.department.ui.PanelEmployee;
 import com.dgit.department.ui.PanelTitle;
@@ -20,7 +24,9 @@ public class ERP_Application extends JFrame implements ActionListener {
 	private JButton btnEmployee;
 	private JButton btnDepartment;
 	private JButton btnTitle;
-	private final ERP_Frame subFrame;
+	private final FrameTitle tFrame;
+	private final FrameDepartment dFrame;
+	private final FrameEmployee eFrame;
 
 	/**
 	 * Launch the application.
@@ -64,7 +70,9 @@ public class ERP_Application extends JFrame implements ActionListener {
 		btnTitle.addActionListener(this);
 		contentPane.add(btnTitle);
 		
-		subFrame = new ERP_Frame();
+		tFrame = new FrameTitle();
+		dFrame = new FrameDepartment();
+		eFrame = new FrameEmployee();		
 		pack();
 	}
 
@@ -82,24 +90,21 @@ public class ERP_Application extends JFrame implements ActionListener {
 	protected void btnEmployeeActionPerformed(ActionEvent e) {
 		//사원관리 클릭 시 
 		PanelEmployee ePanel = new PanelEmployee();
-		subFrame.setTitle("사원 관리");
-		subFrame.setContentPane(ePanel);
-		subFrame.pack();
-		subFrame.setVisible(true);	
+		eFrame.setContentPane(ePanel);		
+		eFrame.setVisible(true);	
+		eFrame.pack();
 	}
 	protected void btnDepartmentActionPerformed(ActionEvent e) {
 		//부서 관리 클릭 시
 		PanelDepartment dPanel = new PanelDepartment();
-		subFrame.setTitle("부서 관리");
-		subFrame.setContentPane(dPanel);
-		subFrame.pack();
-		subFrame.setVisible(true);	
+		dFrame.setContentPane(dPanel);		
+		dFrame.setVisible(true);
+		dFrame.pack();
 	}
 	protected void btnTitleActionPerformed(ActionEvent e) {
-		PanelTitle tPanel = new PanelTitle();
-		subFrame.setTitle("직책 관리");
-		subFrame.setContentPane(tPanel);
-		subFrame.pack();
-		subFrame.setVisible(true);	
+		PanelTitle tPanel = new PanelTitle();		
+		tFrame.setContentPane(tPanel);		
+		tFrame.setVisible(true);
+		tFrame.pack();
 	}
 }

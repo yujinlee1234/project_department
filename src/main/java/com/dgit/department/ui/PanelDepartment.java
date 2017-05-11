@@ -52,6 +52,7 @@ public class PanelDepartment extends JPanel implements ActionListener, KeyListen
 	private JPanel panel;
 	private JMenuItem itemUpdate;
 	private JMenuItem itemDelete;
+	private int selectedIndex;
 
 	/**
 	 * Create the panel.
@@ -190,6 +191,7 @@ public class PanelDepartment extends JPanel implements ActionListener, KeyListen
 				DepartmentService.getInstance().deleteDepartment(department.getDcode());
 				table.setTable();
 				resetFields();
+				btnAdd.setText("추가");
 				UseJOptionPane.showMessage("성공적으로 삭제되었습니다.");
 			}catch(Exception ex){
 				UseJOptionPane.showWarningMessage("오류가 발생하여 삭제되지 못했습니다.\n"+ex.getMessage());
@@ -199,15 +201,13 @@ public class PanelDepartment extends JPanel implements ActionListener, KeyListen
 
 	private void itemUpdateActionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		int index = table.getSelectedRow();
-		if(index<0){
+		selectedIndex = table.getSelectedRow();
+		if(selectedIndex<0){
 			UseJOptionPane.showWarningMessage("수정할 아이템이 선택되지 않았습니다.");
 		}else{
 			btnAdd.setText("수정");
-			Department department = table.getSelectedItem(index);
-			tfDcode.setText("D"+String.format("%03d", department.getDcode()));
-			tfDname.setText(department.getDname());
-			tfFloor.setText(department.getFloor()+"");
+			setFiledsWithDepartment();
+			
 		}
 	}
 
@@ -251,14 +251,26 @@ public class PanelDepartment extends JPanel implements ActionListener, KeyListen
 		}
 	}
 	protected void btnCancelActionPerformed(ActionEvent e) {
-		resetFields();
+		if(btnAdd.getText().equals("추가")){
+			resetFields();
+		}else if(btnAdd.getText().equals("수정")){
+			setFiledsWithDepartment();
+		}
 	}
 
+
+	private void setFiledsWithDepartment() {
+		// TODO Auto-generated method stub
+		Department department = table.getSelectedItem(selectedIndex);
+		tfDcode.setText(String.format("D%03d", department.getDcode()));
+		tfDname.setText(department.getDname());
+		tfFloor.setText(department.getFloor()+"");
+	}
 
 	private void resetFields() {
 		// TODO Auto-generated method stub
 		int dcode = DepartmentService.getInstance().getMaxNo();
-		tfDcode.setText("D"+String.format("%03d", (dcode+1)));
+		tfDcode.setText(String.format("D%03d", (dcode+1)));
 		tfDname.setText("");
 		tfFloor.setText("");
 	}

@@ -13,13 +13,16 @@ import com.dgit.department.service.EmployeeService;
 import junit.framework.Assert;
 
 public class DepartmentServiceTest {
-
+	private static DepartmentService dService;
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		dService = DepartmentService.getInstance();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		dService = null;
 	}
 	
 /*	@Test
@@ -28,7 +31,6 @@ public class DepartmentServiceTest {
 		item.setDcode(0);
 		item.setDname("총무");
 		item.setFloor(10);
-		DepartmentService dService = DepartmentService.getInstance();
 	
 		int result = dService.insertDepartment(item);
 		Assert.assertEquals(1, result);
@@ -39,7 +41,6 @@ public class DepartmentServiceTest {
 	
 /*	@Test
 	public void updateTest(){
-		DepartmentService dService = DepartmentService.getInstance();
 		Department item = dService.getDepartment(0);
 		item.setDname("인사");
 		item.setFloor(5);
@@ -51,7 +52,6 @@ public class DepartmentServiceTest {
 	}*/
 /*	@Test
 	public void deleteTest(){
-		DepartmentService dService = DepartmentService.getInstance();
 		Department item = dService.getDepartment(0);
 		
 		int result = dService.deleteDepartment(item.getDcode());
@@ -62,15 +62,13 @@ public class DepartmentServiceTest {
 	}*/
 /*	
 	@Test
-	public void selectTest(){
-		DepartmentService dService = DepartmentService.getInstance();
+	public void selectListTest(){
 		List<Department> dList = dService.getAllDepartments();
 		Assert.assertNotNull(dList);
 	}*/
 	
 	@Test
-	public void selectTest(){
-		EmployeeService dService = EmployeeService.getInstance();
+	public void selectNoTest(){
 		int result = dService.getMaxNo();
 		System.out.println(result);
 	}

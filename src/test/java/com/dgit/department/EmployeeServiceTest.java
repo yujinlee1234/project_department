@@ -16,18 +16,21 @@ import com.dgit.department.service.TitleService;
 import junit.framework.Assert;
 
 public class EmployeeServiceTest {
-
+	private static EmployeeService eService;
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		eService = EmployeeService.getInstance();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		eService = null;
 	}
 	
 /*	@Test
 	public void insertTest(){
-		EmployeeService eService = EmployeeService.getInstance();
+		
 		TitleService tService = TitleService.getInstance();
 		DepartmentService dService = DepartmentService.getInstance();
 		
@@ -52,7 +55,6 @@ public class EmployeeServiceTest {
 /*	
 	@Test
 	public void updateTest(){
-		EmployeeService eService = EmployeeService.getInstance();
 		Employee item = eService.getEmployee(eService.getMaxEno());
 		item.setEname("삼유진");
 		item.setGender(true);
@@ -65,7 +67,6 @@ public class EmployeeServiceTest {
 	}*/
 /*	@Test
 	public void deleteTest(){
-		EmployeeService eService = EmployeeService.getInstance();
 		int eno = eService.getMaxEno();
 		
 		int result = eService.deleteEmployee(eno);
@@ -77,7 +78,6 @@ public class EmployeeServiceTest {
 	/*
 	@Test
 	public void selectListTest(){
-		EmployeeService eService = EmployeeService.getInstance();
 		List<Employee> eList = eService.getAllEmployees();
 		Assert.assertNotNull(eList);
 		
@@ -88,7 +88,6 @@ public class EmployeeServiceTest {
 	*/
 	@Test
 	public void selectTest(){
-		EmployeeService eService = EmployeeService.getInstance();
 		Employee eList = eService.getEmployee(17005);
 		Assert.assertNotNull(eList);
 		
@@ -97,8 +96,7 @@ public class EmployeeServiceTest {
 	
 	@Test
 	public void selectNoTest(){
-		EmployeeService dService = EmployeeService.getInstance();
-		int result = dService.getMaxNo();
+		int result = eService.getMaxNo();
 		System.out.println(result);
 	}
 

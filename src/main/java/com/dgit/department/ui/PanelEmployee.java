@@ -315,6 +315,7 @@ public class PanelEmployee extends JPanel implements ActionListener {
 				EmployeeService.getInstance().deleteEmployee(employee.getEno());
 				table.setTable();
 				resetFields();
+				btnAdd.setText("추가");
 				UseJOptionPane.showMessage("성공적으로 삭제되었습니다.");
 			}catch(Exception ex){
 				UseJOptionPane.showWarningMessage("오류가 발생하여 삭제되지 못했습니다.\n"+ex.getMessage());
@@ -398,11 +399,20 @@ public class PanelEmployee extends JPanel implements ActionListener {
 
 	private void resetFields() {
 		// TODO Auto-generated method stub
-		tfEno.setText("E"+(EmployeeService.getInstance().getMaxNo()+1));
+		int eno = EmployeeService.getInstance().getMaxNo();
+		if(eno == 0){
+			tfEno.setText("E17001");
+		}else{
+			tfEno.setText("E"+(EmployeeService.getInstance().getMaxNo()+1));
+		}
 		tfEname.setText("");
 		tfJoinDate.setText(Employee.joinDateFormat.format(new Date()));
-		cmbDepart.setSelectedIndex(0);
-		cmbTitle.setSelectedIndex(0);
+		if(cmbDepart.getItemCount()>0){
+			cmbDepart.setSelectedIndex(0);
+		}
+		if(cmbTitle.getItemCount()>0){
+			cmbTitle.setSelectedIndex(0);
+		}
 		rbtnMale.setSelected(true);
 		spnSalary.setValue(defaultSalary);
 	}

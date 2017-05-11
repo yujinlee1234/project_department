@@ -107,7 +107,10 @@ public class DepartmentService {
 		SqlSession sqlSession = MyBatisSqlSessionFactory.openSession();
 		DepartmentMapper dMapper = sqlSession.getMapper(DepartmentMapper.class);
 		try{
-			int result = dMapper.getMaxNum();			
+			int result = 0;
+			if(dMapper.getMaxNum()!= null){
+				result = (int)dMapper.getMaxNum();	
+			}		
 			return result;
 		}finally{
 			sqlSession.close();

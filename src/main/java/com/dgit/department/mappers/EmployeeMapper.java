@@ -24,5 +24,5 @@ public interface EmployeeMapper {
 	public int deleteItem(int eno);
 	
 	@Select("select max(eno) from employee")
-	public int getMaxNum();
+	public Object getMaxNum();
 }

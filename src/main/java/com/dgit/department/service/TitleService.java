@@ -104,7 +104,10 @@ public class TitleService {
 		SqlSession sqlSession = MyBatisSqlSessionFactory.openSession();
 		TitleMapper tDao = sqlSession.getMapper(TitleMapper.class);
 		try{
-			int result = tDao.getMaxNum();			
+			int result = 0;
+			if(tDao.getMaxNum() != null){
+				result = (int)tDao.getMaxNum();
+			}
 			return result;
 		}finally{
 			sqlSession.close();

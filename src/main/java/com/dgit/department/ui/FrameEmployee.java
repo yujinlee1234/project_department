@@ -1,4 +1,4 @@
-package com.dgit.department;
+package com.dgit.department.ui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -7,12 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.dgit.department.ui.PanelDepartment;
-import com.dgit.department.ui.PanelEmployee;
-
-public class ERP_Frame extends JFrame {
+public class FrameEmployee extends JFrame {
 
 	private JPanel contentPane;
+	private PanelEmployee ePanel;
 
 	/**
 	 * Launch the application.
@@ -21,7 +19,7 @@ public class ERP_Frame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ERP_Frame frame = new ERP_Frame();
+					FrameEmployee frame = new FrameEmployee();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,15 +31,17 @@ public class ERP_Frame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ERP_Frame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 300);
+	public FrameEmployee() {
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		setTitle("사원 관리");
+		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
-		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setContentPane(contentPane);
-		contentPane.add(new PanelDepartment(), BorderLayout.CENTER);
+		
+		ePanel = new PanelEmployee();
+		contentPane.add(ePanel, BorderLayout.CENTER);
 		pack();
 	}
 

@@ -27,5 +27,5 @@ public interface DepartmentMapper {
 	public int deleteItem(int dcode);
 	
 	@Select("select max(dcode) from department")
-	public int getMaxNum();
+	public Object getMaxNum();
 }

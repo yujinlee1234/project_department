@@ -48,6 +48,7 @@ public class PanelTitle extends JPanel implements ActionListener {
 	private JPanel panel;
 	private JMenuItem itemUpdate;
 	private JMenuItem itemDelete;
+	private int selectedIndex;
 
 	/**
 	 * Create the panel.
@@ -168,7 +169,8 @@ public class PanelTitle extends JPanel implements ActionListener {
 				TitleService.getInstance().deleteTitle(title.getTcode());
 				table.setTable();
 				resetFields();
-				UseJOptionPane.showMessage("성공적으로 삭제되었습니다.");
+				btnAdd.setText("추가");
+				UseJOptionPane.showMessage("성공적으로 삭제되었습니다.");				
 			}catch(Exception ex){
 				UseJOptionPane.showWarningMessage("오류가 발생하여 삭제되지 못했습니다.\n"+ex.getMessage());
 			}
@@ -177,14 +179,13 @@ public class PanelTitle extends JPanel implements ActionListener {
 
 	protected void itemUpdateActionPerformed(ActionEvent e) {//수정
 		// TODO Auto-generated method stub		
-		int index = table.getSelectedRow();
-		if(index<0){
+		selectedIndex = table.getSelectedRow();
+		if(selectedIndex<0){
 			UseJOptionPane.showWarningMessage("수정할 아이템이 선택되지 않았습니다.");
 		}else{
 			btnAdd.setText("수정");
-			Title title = table.getSelectedItem(index);
-			tftcode.setText("T"+String.format("%03d", title.getTcode()));
-			tftname.setText(title.getTname());
+			serFieldsWithTitle();
+			
 		}
 	}
 
@@ -225,14 +226,25 @@ public class PanelTitle extends JPanel implements ActionListener {
 		}
 	}
 	protected void btnCancelActionPerformed(ActionEvent e) {//취소
-		resetFields();
+		if(btnAdd.getText().equals("추가")){
+			resetFields();
+		}else if(btnAdd.getText().equals("수정")){
+			serFieldsWithTitle();
+		}
 	}
 
+
+	private void serFieldsWithTitle() {
+		// TODO Auto-generated method stub
+		Title title = table.getSelectedItem(selectedIndex);
+		tftcode.setText(String.format("T%03d", title.getTcode()));
+		tftname.setText(title.getTname());
+	}
 
 	private void resetFields() {
 		// 필드 초기화
 		int tcode = TitleService.getInstance().getMaxNo();
-		tftcode.setText("T"+String.format("%03d", (tcode+1)));
+		tftcode.setText(String.format("T%03d", (tcode+1)));
 		tftname.setText("");
 	}
 }

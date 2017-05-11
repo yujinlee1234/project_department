@@ -108,7 +108,10 @@ public class EmployeeService {
 		SqlSession sqlSession = MyBatisSqlSessionFactory.openSession();
 		EmployeeMapper eMapper = sqlSession.getMapper(EmployeeMapper.class);
 		try{
-			int result = eMapper.getMaxNum();			
+			int result = 0;
+			if(eMapper.getMaxNum()!= null){
+				result = (int)eMapper.getMaxNum();
+			}		
 			return result;
 		}finally{
 			sqlSession.close();

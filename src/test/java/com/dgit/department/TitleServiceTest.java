@@ -1,7 +1,5 @@
 package com.dgit.department;
 
-import static org.junit.Assert.fail;
-
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -48,7 +46,7 @@ public class TitleServiceTest {
 		System.out.println(tService.getTitle(0));
 		
 	}*/
-	@Test
+	/*@Test
 	public void deleteTitleTest(){
 		TitleService tService = TitleService.getInstance();
 		Title title = tService.getTitle(0);
@@ -58,13 +56,31 @@ public class TitleServiceTest {
 		
 		System.out.println(tService.getTitle(0));
 		
-	}
+	}*/
 	
 	@Test
-	public void TitleTest(){
+	public void selectTitleTest(){
 		TitleService tService = TitleService.getInstance();
 		Title t = tService.getTitle(0);
 		Assert.assertNotNull(t);
+		
+		System.out.println(t);		
+	}
+	
+	@Test
+	public void selectListTitleTest(){
+		TitleService tService = TitleService.getInstance();
+		List<Title> t = tService.getAllTitles();
+		Assert.assertNotNull(t);
+		
+		System.out.println(t);		
+	}
+	
+	@Test
+	public void selectNoTitleTest(){
+		TitleService tService = TitleService.getInstance();
+		int t = tService.getMaxNo();
+		Assert.assertNotSame(0, t);;
 		
 		System.out.println(t);		
 	}

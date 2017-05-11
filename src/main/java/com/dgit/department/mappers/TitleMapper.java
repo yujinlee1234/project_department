@@ -26,5 +26,5 @@ public interface TitleMapper {
 	public int deleteTitle(int tcode);
 	
 	@Select("select max(tcode) from title")
-	public int getMaxNum();
+	public Object getMaxNum();
 }

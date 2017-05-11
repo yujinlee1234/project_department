@@ -17,14 +17,7 @@ jar {
     }
     archiveName 'ERP_Application-bin-'+version+'.jar'
 }
-jar {
-	mainClassName = 'com.dgit.department.SettingUI'
-    manifest {
-        attributes 'Implementation-Title': 'Department',
-                   'Implementation-Version': version
-    }
-    archiveName 'SettingUI-bin-'+version+'.jar'
-}
+
 repositories {
     mavenCentral()
 }

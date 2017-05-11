@@ -1,31 +1,23 @@
 package com.dgit.department;
 
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.dgit.department.setting.ExportSettingService;
-import com.dgit.department.setting.ImportSettingService;
-import com.dgit.department.setting.InitSettingService;
-import com.dgit.department.setting.SettingService;
-import java.awt.GridLayout;
-
-public class SettingUI extends JFrame implements ActionListener {
+public class SettingUI extends JFrame {
+	/* FIELDS */
 	private JPanel contentPane;
 	private JButton btnInit;
 	private JButton btnExport;
-	private JButton btnImport;
-	private SettingService service;
-	
-	
+	private JButton btnImport;	
+	/* MAIN */
 	public static void main(String[] args) {
 		new SettingUI();	
 	}
+	/* CONSTRUCTOR */
 	public SettingUI() {		
 		setTitle("DB관리 메뉴");
 		setBounds(100, 100, 450, 300);
@@ -35,49 +27,16 @@ public class SettingUI extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(1, 0, 20, 0));
 		
-		btnInit = new JButton("초기화");
-		btnInit.addActionListener(this);
-		
+		btnInit = new JButton("초기화");		
 		contentPane.add(btnInit);
 		
 		btnExport = new JButton("백업");
-		btnExport.addActionListener(this);
 		contentPane.add(btnExport);
 		
 		btnImport = new JButton("복원");
-		btnImport.addActionListener(this);
 		contentPane.add(btnImport);
 		
 		setVisible(true);		
 		pack();
 	}	
-	
-	public void actionPerformed(ActionEvent arg0) {
-		if (arg0.getSource() == btnImport) {
-			actionPerformedBtnImport(arg0);
-		}
-		if (arg0.getSource() == btnExport) {
-			actionPerformedBtnExport(arg0);
-		}
-		if (arg0.getSource() == btnInit) {
-			actionPerformedBtnInit(arg0);
-		}
-	}
-	protected void actionPerformedBtnInit(ActionEvent arg0) {
-		//초기화
-		service = new InitSettingService();
-		service.doSetting();
-		
-	}
-	protected void actionPerformedBtnExport(ActionEvent arg0) {
-		//백업
-		service = new ExportSettingService();
-		service.doSetting();
-		
-	}
-	protected void actionPerformedBtnImport(ActionEvent arg0) {
-		//복원
-		service = new ImportSettingService();
-		service.doSetting();		
-	}
 }

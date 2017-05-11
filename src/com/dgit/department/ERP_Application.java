@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.dgit.department.ui.ERP_Frame;
 import com.dgit.department.ui.PanelDepartment;
 import com.dgit.department.ui.PanelEmployee;
 import com.dgit.department.ui.PanelTitle;
@@ -46,10 +47,11 @@ public class ERP_Application extends JFrame implements ActionListener {
 		setBounds(100, 100, 450, 300);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		contentPane = new JPanel();
+		//상하좌우 여백 20px
 		contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(1, 0, 20, 0));
-		
+		//버튼 간 여백 20px
+		contentPane.setLayout(new GridLayout(1, 0, 20, 0));		
 		
 		btnEmployee = new JButton("사원관리");
 		btnEmployee.addActionListener(this);
@@ -96,6 +98,7 @@ public class ERP_Application extends JFrame implements ActionListener {
 		subFrame.setVisible(true);	
 	}
 	protected void btnTitleActionPerformed(ActionEvent e) {
+		//직책 관리 클릭 시
 		ERP_Frame subFrame = new ERP_Frame();
 		PanelTitle tPanel = new PanelTitle();
 		subFrame.setTitle("직책 관리");

@@ -78,6 +78,6 @@ public class SettingUI extends JFrame implements ActionListener {
 	protected void actionPerformedBtnImport(ActionEvent arg0) {
 		//복원
 		service = new ImportSettingService();
-		service.doSetting();		
+		service.doSetting();
 	}
 }

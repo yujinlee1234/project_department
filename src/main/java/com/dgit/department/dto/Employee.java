@@ -3,6 +3,7 @@ package com.dgit.department.dto;
 import java.util.Date;
 
 public class Employee {
+	/* FIELDS */
 	private int eno;
 	private String ename;
 	private int salary;
@@ -10,7 +11,7 @@ public class Employee {
 	private boolean gender;
 	private Date joindate;
 	private Title title;
-	
+	/* GET/SET */
 	public int getEno() {
 		return eno;
 	}
@@ -53,6 +54,7 @@ public class Employee {
 	public void setTitle(Title title) {
 		this.title = title;
 	}
+	/* METHODS */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -77,8 +79,5 @@ public class Employee {
 	public String toString() {
 		return String.format("Employee [eno=%s, ename=%s, salary=%s, dno=%s, gender=%s, joindate=%s, title=%s]", eno,
 				ename, salary, dno, gender, joindate, title);
-	}
-	
-	
-	
+	}	
 }

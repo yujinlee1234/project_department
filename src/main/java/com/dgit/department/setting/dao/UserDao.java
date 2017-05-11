@@ -49,6 +49,7 @@ public class UserDao {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, DBConfig.PJT_USER);
 			pstmt.setString(2, DBConfig.PJT_PASSWD);
+			
 			pstmt.execute();
 			System.out.printf("Create User(%s) Success! %n", DBConfig.PJT_USER);
 		} catch (SQLException e) {

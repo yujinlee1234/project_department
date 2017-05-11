@@ -1,10 +1,11 @@
 package com.dgit.department.dto;
 
 public class Department {
+	/* FIELDS */
 	private int dcode;
 	private String dname;
 	private int floor;
-	
+	/* GET/SET */
 	public int getDcode() {
 		return dcode;
 	}
@@ -23,6 +24,7 @@ public class Department {
 	public void setFloor(int floor) {
 		this.floor = floor;
 	}
+	/* METHODS */
 	@Override
 	public String toString() {
 		return String.format("%s(%s층)", dname, floor);
@@ -47,8 +49,5 @@ public class Department {
 		if (dcode != other.dcode)
 			return false;
 		return true;
-	}
-	
-	
-	
+	}	
 }

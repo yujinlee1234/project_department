@@ -1,9 +1,10 @@
 package com.dgit.department.dto;
 
 public class Title {
+	/* FILEDS */
 	private int tcode;
 	private String tname;
-
+	/* GET/SET */
 	public int getTcode() {
 		return tcode;
 	}
@@ -16,7 +17,7 @@ public class Title {
 	public void setTname(String tname) {
 		this.tname = tname;
 	}
-	
+	/* METHODS */
 	@Override
 	public String toString() {
 		return String.format("%s", tname);

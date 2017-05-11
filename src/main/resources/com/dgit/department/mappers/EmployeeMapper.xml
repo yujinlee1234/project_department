@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dgit.department.mappers.EmployeeMapper">
+	<resultMap type="Employee" id="EmployeeResult">
+		<id property="eno" column="eno"/>
+		<result property="ename" column="ename"/>
+		<result property="salary" column="salary"/>
+		<result property="gender" column="gender"/>
+		<result property="joindate" column="joindate"/>
+		<association property="dno" resultMap="com.dgit.department.mappers.DepartmentMapper.DepartmentResult"/>
+		<association property="title" resultMap="com.dgit.department.mappers.TitleMapper.TitleResult"/>
+	</resultMap>
+	<select id="selectAllItem" resultMap="EmployeeResult">
+		select * from view_employee
+	</select>
+	<select id="selectItem" resultMap="EmployeeResult">
+		select * from view_employee where eno=#{eno}
+	</select>
+	<insert id="insertItem" parameterType="Employee">
+		insert into employee values(#{eno},#{ename},#{salary},#{dno.dcode},#{gender},#{joindate},#{title.tcode})
+	</insert>
+	<update id="updateItem" parameterType="Employee">
+		update employee set ename=#{ename}, salary=#{salary}, dno=#{dno.dcode}, gender=#{gender}, joindate=#{joindate}, title=#{title.tcode}
+		 where eno=#{eno}
+	</update>
+	<delete id="deleteItem">
+		delete from employee where eno=#{eno}
+	</delete>
+</mapper>

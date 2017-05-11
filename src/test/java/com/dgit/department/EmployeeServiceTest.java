@@ -28,13 +28,13 @@ public class EmployeeServiceTest {
 		eService = null;
 	}
 	
-/*	@Test
+	@Test
 	public void insertTest(){
 		
 		TitleService tService = TitleService.getInstance();
 		DepartmentService dService = DepartmentService.getInstance();
 		
-		int eno = eService.getMaxEno()+1;
+		int eno = eService.getMaxNo()+1;
 		Employee employee = new Employee();
 		employee.setEno(eno);
 		employee.setEname("이유진");
@@ -47,50 +47,44 @@ public class EmployeeServiceTest {
 		
 	
 		int result = eService.insertEmployee(employee);
-		Assert.assertEquals(1, result);
-		
+		Assert.assertEquals(1, result);		
 		System.out.println(eService.getEmployee(employee.getEno()));
 		
-	}*/
-/*	
+	}
+	
 	@Test
 	public void updateTest(){
-		Employee item = eService.getEmployee(eService.getMaxEno());
+		Employee item = eService.getEmployee(eService.getMaxNo());
 		item.setEname("삼유진");
 		item.setGender(true);
 		item.setSalary(5000000);
 		int result = eService.updateEmployee(item);
-		Assert.assertEquals(1, result);
-		
+		Assert.assertEquals(1, result);		
 		System.out.println(eService.getEmployee(item.getEno()));
 		
-	}*/
-/*	@Test
+	}
+	@Test
 	public void deleteTest(){
-		int eno = eService.getMaxEno();
-		
+		int eno = eService.getMaxNo();		
 		int result = eService.deleteEmployee(eno);
 		Assert.assertEquals(1, result);
-		
 		System.out.println(eService.getEmployee(eno));
 		
-	}*/
-	/*
+	}
+	
 	@Test
 	public void selectListTest(){
 		List<Employee> eList = eService.getAllEmployees();
-		Assert.assertNotNull(eList);
-		
+		Assert.assertNotNull(eList);		
 		for(Employee e : eList){
 			System.out.println(e);
 		}
 	}
-	*/
+	
 	@Test
 	public void selectTest(){
 		Employee eList = eService.getEmployee(17005);
-		Assert.assertNotNull(eList);
-		
+		Assert.assertNotNull(eList);		
 		System.out.println(eList);
 	}
 	
